@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Фильмы по режиссёрам</title>
+</head>
+<body>
+<h1>Фильмы по режиссёрам</h1>
+<h1>Всего: {{.Total}}</h1>
+<nav>
+    <a href="/films">Все фильмы</a>
+    |
+    <a href="/import">Добавить фильм</a>
+</nav>
+
+{{if .Groups}}
+{{range .Groups}}
+<section>
+    <h2>{{.Director}}</h2>
+
+    <ul>
+        {{range .Films}}
+        <li>
+            <strong>{{.Name}}</strong>
+            {{if .Year}}({{.Year}}){{end}}
+
+            {{if .OriginalName}}
+            <br>
+            <small>Original: {{.OriginalName}}</small>
+            {{end}}
+
+            {{if .Countries}}
+            <br>
+            <small>
+                Countries:
+                {{range .Countries}}
+                {{.}}
+                {{end}}
+            </small>
+            <br>
+            ID: {{.ID}}
+            <form
+                    method="post"
+                    action="/films/{{.ID}}/delete"
+                    style="display:inline"
+            >
+                <button type="submit">
+                    Удалить
+                </button>
+            </form>
+            {{end}}
+        </li>
+        {{end}}
+    </ul>
+</section>
+{{end}}
+{{else}}
+<p>Фильмов пока нет.</p>
+{{end}}
+</body>
+</html>

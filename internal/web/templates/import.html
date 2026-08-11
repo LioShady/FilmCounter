@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Добавить фильм</title>
+</head>
+<body>
+<h1>Добавить фильм</h1>
+
+<nav>
+    <a href="/films">Все фильмы</a>
+</nav>
+
+<form method="post" action="/import/search">
+    <label>
+        Название фильма:
+        <input type="text" name="name" value="{{.Query}}" required>
+    </label>
+    <label>
+        Кол-во вариантов:
+        <input type="text" name="count" value="{{.Count}}" size="2">
+    </label>
+
+    <button type="submit">Найти</button>
+</form>
+
+{{if .Films}}
+<h2>Результаты поиска</h2>
+
+{{range .Films}}
+<section>
+    <h3>{{.Name}} {{if .Year}}({{.Year}}){{end}}</h3>
+
+    {{if .OriginalName}}
+    <p>Original: {{.OriginalName}}</p>
+    {{end}}
+
+    {{if .Countries}}
+    <p>
+        Countries:
+        {{range .Countries}}
+        {{.}}
+        {{end}}
+    </p>
+    {{end}}
+
+    {{if .Directors}}
+    <p>
+        Directors:
+        {{range .Directors}}
+        {{.}}
+        {{end}}
+    </p>
+    {{end}}
+
+    <form method="post" action="/import/add">
+        <input type="hidden" name="id" value="{{.ID}}">
+        <input type="hidden" name="name" value="{{.Name}}">
+        <input type="hidden" name="original_name" value="{{.OriginalName}}">
+        <input type="hidden" name="year" value="{{.Year}}">
+
+        {{range .Countries}}
+        <input type="hidden" name="countries" value="{{.}}">
+        {{end}}
+
+        {{range .Directors}}
+        <input type="hidden" name="directors" value="{{.}}">
+        {{end}}
+
+        <button type="submit">Добавить этот фильм</button>
+    </form>
+</section>
+<hr>
+{{end}}
+{{end}}
+</body>
+</html>
